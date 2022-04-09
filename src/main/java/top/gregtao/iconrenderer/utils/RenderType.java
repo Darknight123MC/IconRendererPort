@@ -1,4 +1,4 @@
-package top.gregtao.iconrenderer;
+package top.gregtao.iconrenderer.utils;
 
 import net.minecraft.block.Block;
 
