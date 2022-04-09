@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import top.gregtao.iconrenderer.commands.ExportsIconsCommand;
+import top.gregtao.iconrenderer.commands.ExportIconsCommand;
 
 @Mod("iconr")
 public class IconRenderer {
@@ -26,6 +26,7 @@ public class IconRenderer {
     @SubscribeEvent
     public void registerCommands(RegisterClientCommandsEvent event) {
         final CommandDispatcher<ServerCommandSource> dispatcher = event.getDispatcher();
-        dispatcher.register(CommandManager.literal("exporticons").then((ExportsIconsCommand.register())));
+        dispatcher.register(CommandManager.literal("exporticons").then(ExportIconsCommand.register()));
+        dispatcher.register(CommandManager.literal("exporticons").then(ExportIconsCommand.registerEAI()));
     }
 }
