@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ExportIconsCommand {
     public static RequiredArgumentBuilder<ServerCommandSource, String> register() {
-        return CommandManager.argument("modid", StringArgumentType.string()).executes(ExportIconsCommand::exportIcons);
+        return CommandManager.argument("namespace", StringArgumentType.string()).executes(ExportIconsCommand::exportIcons);
     }
 
     public static LiteralArgumentBuilder<ServerCommandSource> registerEAI() {

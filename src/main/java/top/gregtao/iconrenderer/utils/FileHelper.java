@@ -9,6 +9,8 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
+import net.minecraftforge.registries.ForgeRegistries;
 import top.gregtao.iconrenderer.IconRenderer;
 
 import java.io.File;
@@ -45,6 +47,7 @@ public class FileHelper {
     }
 
     public void fromModId() {
+        /*
         for (ItemGroup group : ItemGroup.GROUPS) {
             if (group != ItemGroup.HOTBAR && group != ItemGroup.INVENTORY && group != ItemGroup.SEARCH) {
                 DefaultedList<ItemStack> itemStacks = DefaultedList.of();
@@ -53,15 +56,22 @@ public class FileHelper {
                     if (Registry.ITEM.getId(itemStack.getItem()).getNamespace().equals(this.modId)) {
                         this.jsonMetas.add(new JsonMeta(itemStack, group));
                     }
-                    /* Debug
+                    // Debug
                     if (itemStack.isOf(Items.DIAMOND_AXE)) {
                         this.jsonMetas.add(new JsonMeta(itemStack, group));
                         break;
                     }
-                    */
+
                 }
             }
         }
+        */
+
+        ForgeRegistries.ITEMS.getEntries().iterator().forEachRemaining(e -> {
+            if (e.getKey().getRegistryName().getNamespace().equals(modId)) {
+                this.jsonMetas.add(new JsonMeta(e));
+            }
+        });
         Registry.ENTITY_TYPE.forEach(this::putEntity);
     }
 
@@ -84,25 +94,37 @@ public class FileHelper {
         resetLanguage("zh_cn");
         for (JsonMeta meta : this.jsonMetas) {
             meta.zhName = meta.itemStack.getName().getString();
-            meta.creativeTab = meta.itemGroup.getDisplayName().getString();
+            //meta.creativeTab = meta.itemGroup.getDisplayName().getString();
         }
         for (EntityJsonMeta meta : this.entityJsonMetas) {
             meta.zhName = meta.entity.getDisplayName().getString();
         }
     }
 
-    public void writeToFile() throws IOException {
-        FileWriter writer = new FileWriter(this.file, StandardCharsets.UTF_8);
-        for (JsonMeta meta : this.jsonMetas) {
-            writer.write(meta.toJsonObject().toString() + "\n");
+    public void writeToFile() {
+        try (final FileWriter m_writer = new FileWriter(this.file, StandardCharsets.UTF_8)) {
+            for (JsonMeta meta : this.jsonMetas) {
+                try {
+                    m_writer.write(meta.toJsonObject().toString() + "\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        writer.close();
 
-        writer = new FileWriter(this.entityFile, StandardCharsets.UTF_8);
-        for (EntityJsonMeta meta : this.entityJsonMetas) {
-            writer.write(meta.toJsonObject().toString() + "\n");
+        try (final FileWriter e_writer = new FileWriter(this.entityFile, StandardCharsets.UTF_8);) {
+            for (EntityJsonMeta meta : this.entityJsonMetas) {
+                try {
+                    e_writer.write(meta.toJsonObject().toString() + "\n");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        writer.close();
     }
 
     private static void resetLanguage(String lang) {

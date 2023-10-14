@@ -78,9 +78,12 @@ public class FrameHelper {
             spawnEntity.setPos(client.player.getX(), client.player.getY(), client.player.getZ());
         }
 
-        client.getEntityRenderDispatcher().render(spawnEntity, 0, 0, 0, 0,
-                client.getTickDelta(), this.modelStack, immediate, 15728880);
-
+        try {
+            client.getEntityRenderDispatcher().render(spawnEntity, 0, 0, 0, 0,
+                    client.getTickDelta(), this.modelStack, immediate, 15728880);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void renderGuiItemIcon(ItemStack stack, int x, int y, ItemRenderer renderer) {
