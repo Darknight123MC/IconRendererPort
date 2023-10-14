@@ -75,7 +75,7 @@ public class FileHelper {
     public void readNamesByLang() {
         resetLanguage("en_us");
         for (JsonMeta meta : this.jsonMetas) {
-            meta.enName = meta.itemStack.getItem().getName().getString();
+            meta.enName = meta.itemStack.getName().getString();
         }
         for (EntityJsonMeta meta : this.entityJsonMetas) {
             meta.enName = meta.entity.getDisplayName().getString();
@@ -83,7 +83,7 @@ public class FileHelper {
         }
         resetLanguage("zh_cn");
         for (JsonMeta meta : this.jsonMetas) {
-            meta.zhName = meta.itemStack.getItem().getName().getString();
+            meta.zhName = meta.itemStack.getName().getString();
             meta.creativeTab = meta.itemGroup.getDisplayName().getString();
         }
         for (EntityJsonMeta meta : this.entityJsonMetas) {
